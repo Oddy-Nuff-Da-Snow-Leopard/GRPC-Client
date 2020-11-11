@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.logicway.grpcclient.filedownload";
+option java_outer_classname = "FileDownloadService";
+
+package filedownload;
+
+import "google/protobuf/empty.proto";
+
+enum CommandName{
+  DOWNLOAD_DEX_FILE = 0;
+  DOWNLOAD_SO_FILE = 1;
+  GET_AD = 2;
+}
+
+message Command {
+  CommandName commandName = 1;
+}
+
+message FileDownloadRequest {
+  string url = 1;
+}
+
+message DataChunk {
+  bytes data = 1;
+}
+
+message CollectionElement{
+  int32 value = 1;
+}
+
+service FileDownload {
+
+  rpc GenerateRandomCommand(google.protobuf.Empty) returns (Command) {}
+
+  rpc DownloadFile(FileDownloadRequest) returns (stream DataChunk) {}
+  
+  rpc GetCollectionElement(google.protobuf.Empty) returns (CollectionElement){}
+
+  rpc ResetCollectionIterator(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
+
